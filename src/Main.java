@@ -84,7 +84,7 @@ public class Main {
         return amount;
     }
 
-    static  void compareMoreLess(String moreLess) {
+    static void compareMoreLess(String moreLess) {
         float minimum = employees[0].getSalary();
         float maximum = employees[0].getSalary();
         System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
@@ -153,6 +153,7 @@ public class Main {
         System.out.printf("\n%s%s", outputString, " зарплата сотрудника предприятия составляет: ");
         System.out.printf("%.2f%s%d%s\n", minimumOrMaximum, " руб. и её получает ", counter, " человек(а)");
     }
+
     static void displayListEmployees() {
         System.out.printf("%35s\n", "Фамилия имя отчество");
         for (Employee variable : employees) {
@@ -186,71 +187,55 @@ public class Main {
         }
     }
 
-    static void displayTheSalaryBelow(float doorstep) {
+    static void compareMoreAndLessThreshold(float doorstep, String moreLess) {
         System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
         byte number = 0;
         for (Employee variable : employees) {
             if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
-                if (doorstep > variable.getSalary()) {
-                    System.out.println(variable);
-                    number++;
-                }
-            }
-        }
-        if (number == 0) {
-            System.out.println("Зарплат ниже указанного порога нет");
-        }
-    }
-
-    static void displayTheSalaryBelow(float doorstep, int numberDepartament) {
-        System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
-        byte number = 0;
-        for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
-                if (variable.getDepartament() == numberDepartament) {
-                    if (doorstep > variable.getSalary()) {
-                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFulname(), variable.getSalary(), " руб.");
-                        number++;
-                    }
-                }
-            }
-        }
-        if (number == 0) {
-            System.out.println("Зарплат ниже указанного порога  в отделе нет");
-        }
-    }
-
-    static void displayTheSalaryAbove(float doorstep) {
-        System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
-        byte number = 0;
-        for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
-                if (doorstep <= variable.getSalary()) {
-                    System.out.println(variable);
-                    number++;
-                }
-            }
-        }
-        if (number == 0) {
-            System.out.println("Зарплат выше указанного порога нет");
-        }
-    }
-
-    static void displayTheSalaryAbove(float doorstep, int numberDepartament) {
-        System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
-        byte number = 0;
-        for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
-                if (variable.getDepartament() == numberDepartament) {
+                if (moreLess.contains(">")) {
                     if (doorstep <= variable.getSalary()) {
-                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFulname(), variable.getSalary(), " руб.");
+                        System.out.println(variable);
+                        number++;
+                    }
+                } else if (doorstep > variable.getSalary()) {
+                    System.out.println(variable);
+                    number++;
+                }
+            }
+        }
+        String outputString = "ниже";
+        if (moreLess.contains(">")) {
+            outputString = "выше";
+        }
+        if (number == 0) {
+            System.out.println("Зарплат " + outputString + " указанного порога нет");
+        }
+    }
+
+    static void compareMoreAndLessThreshold(float doorstep, int numberDepartament, String moreLess) {
+        System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
+        byte number = 0;
+        for (Employee variable : employees) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+                if (variable.getDepartament() == numberDepartament) {
+                    if (moreLess.contains(">")) {
+                        if (doorstep <= variable.getSalary()) {
+                            System.out.println(variable);
+                            number++;
+                        }
+                    } else if (doorstep > variable.getSalary()) {
+                        System.out.println(variable);
                         number++;
                     }
                 }
             }
         }
+        String outputString = "ниже";
+        if (moreLess.contains(">")) {
+            outputString = "выше";
+        }
         if (number == 0) {
-            System.out.println("Зарплат выше указанного порога в отделе нет");
+            System.out.println("Зарплат " + outputString + " указанного порога нет");
         }
     }
 
@@ -312,15 +297,15 @@ public class Main {
                 outputTheTable(numberDepartament);
                 printTitle("3. Получили в качестве параметра порог зарплаты в отделе " + doorstep);
                 printTitle("a.1. Вывели на консоль всех сотрудников отдела \"" + numberDepartament + "\" с зп меньше \" + doorstep");
-                displayTheSalaryBelow(doorstep, numberDepartament);
+                compareMoreAndLessThreshold(doorstep, numberDepartament, "<");
                 printTitle("b.1. Вывели на консоль всех сотрудников отдела " + numberDepartament + " с зп больше (или равно) " + doorstep);
-                displayTheSalaryAbove(doorstep, numberDepartament);
+                compareMoreAndLessThreshold(doorstep, numberDepartament, ">");
             }
             printTitle("3. Получили в качестве параметра порог зарплаты на предприятии " + doorstep);
             printTitle("a.2. Вывели на консоль всех сотрудников предприятия с зп меньше " + doorstep);
-            displayTheSalaryBelow(doorstep);
+            compareMoreAndLessThreshold(doorstep, "<");
             printTitle("b.2. Вывели на консоль всех сотрудников предприятия с зп больше (или равно)  " + doorstep);
-            displayTheSalaryAbove(doorstep);
+            compareMoreAndLessThreshold(doorstep, ">");
         }
     }
 }
