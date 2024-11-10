@@ -12,14 +12,18 @@ public class Main {
             new Employee("", 3, 0)
     };
 
-    static boolean evaluateCell(Employee element) {
-        return (element.getSurnameNamePatrnimic() != null && !element.getSurnameNamePatrnimic().isBlank());
+    static void printTitle(String title) {
+        int lineLength = 100;
+        int headerLength = title.length();
+        int dob = (lineLength - headerLength) / 2;
+        String completion = "-";
+        System.out.println("\n" + completion.repeat(dob) + title + completion.repeat(dob));
     }
 
     static void outputTheTable() {
         System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 System.out.println(variable);
             }
         }
@@ -28,9 +32,9 @@ public class Main {
     static void outputTheTable(int numberDepartament) {
         System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
-                    System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getSurnameNamePatrnimic(), variable.getSalary(), " руб.");
+                    System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFulname(), variable.getSalary(), " руб.");
                 }
             }
         }
@@ -39,7 +43,7 @@ public class Main {
     static float calculateAmountExpenses() {
         float amount = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 amount = amount + variable.getSalary();
             }
         }
@@ -49,7 +53,7 @@ public class Main {
     static float calculateAmountExpenses(int numberDepartament) {
         float amount = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
                     amount = amount + variable.getSalary();
                 }
@@ -58,10 +62,10 @@ public class Main {
         return amount;
     }
 
-    static byte countTheEmployees() {
+    static int countTheEmployees() {
         byte amount = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 amount++;
             }
         }
@@ -71,7 +75,7 @@ public class Main {
     static int countTheEmployees(int numberDepartament) {
         int amount = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
                     amount++;
                 }
@@ -80,111 +84,81 @@ public class Main {
         return amount;
     }
 
-    static void findMinimumWage() {
-        float minimum = 1000000f;
-        System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
-        for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
-                if (minimum >= variable.getSalary()) {
-                    minimum = variable.getSalary();
-                }
-            }
-        }
-        int counter = 0;
-        for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
-                if (minimum == variable.getSalary()) {
-                    counter++;
-                    System.out.println(variable);
-                }
-            }
-        }
-        System.out.printf("\n%s", "Минимальная зарплата сотрудника предприятия составляет: ");
-        System.out.printf("%.2f%s%d%s\n", minimum, " руб. и её получает ", counter, " человек(а)");
-    }
-
-    static void findMinimumWage(int numberDepartament) {
-        float minimum = 1000000f;
+    static void compareMoreLess(String moreLess) {
+        float minimum = employees[0].getSalary();
+        float maximum = employees[0].getSalary();
         System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
-                if (variable.getDepartament() == numberDepartament) {
-                    if (minimum >= variable.getSalary()) {
-                        minimum = variable.getSalary();
-                    }
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+                if (minimum > variable.getSalary()) {
+                    minimum = variable.getSalary();
                 }
-            }
-        }
-        int counter = 0;
-        for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
-                if (variable.getDepartament() == numberDepartament) {
-                    if (minimum == variable.getSalary()) {
-                        counter++;
-                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getSurnameNamePatrnimic(), variable.getSalary(), " руб.");
-                    }
-                }
-            }
-        }
-        System.out.printf("\n%s", "Минимальная зарплата сотрудника отдела " + numberDepartament + " составляет: ");
-        System.out.printf("%.2f%s%d%s\n", minimum, " руб. и её получает ", counter, " человек(а)");
-    }
-
-    static void findMaximumWage() {
-        float maximum = 0f;
-        System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
-        for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
                 if (maximum <= variable.getSalary()) {
                     maximum = variable.getSalary();
                 }
             }
         }
-        byte counter = 0;
+        int counter = 0;
+        float minimumOrMaximum = minimum;
+        String outputString = "Минимальная";
+        if (moreLess.contains(">")) {
+            minimumOrMaximum = maximum;
+            outputString = "Максимальная";
+        }
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
-                if (maximum == variable.getSalary()) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+                if (minimumOrMaximum == variable.getSalary()) {
                     counter++;
                     System.out.println(variable);
                 }
             }
         }
-        System.out.printf("\n%s", "Максимальная зарплата сотрудника предприятия составляет: ");
-        System.out.printf("%.2f%s%d%s\n", maximum, " руб. и её получает ", counter, " человек(а)");
+        System.out.printf("\n%s%s", outputString, " зарплата сотрудника предприятия составляет: ");
+        System.out.printf("%.2f%s%d%s\n", minimumOrMaximum, " руб. и её получает ", counter, " человек(а)");
     }
 
-    static void findMaximumWage(int numberDepartament) {
-        float maximum = 0f;
+    static void compareMoreLess(int numberDepartament, String moreLess) {
+        float minimum = employees[0].getSalary();
+        float maximum = employees[0].getSalary();
         System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
+                    if (minimum > variable.getSalary()) {
+                        minimum = variable.getSalary();
+                    }
                     if (maximum <= variable.getSalary()) {
                         maximum = variable.getSalary();
                     }
                 }
             }
         }
-        byte counter = 0;
+        int counter = 0;
+        float minimumOrMaximum = minimum;
+        String outputString = "Минимальная";
+        if (moreLess.contains(">")) {
+            minimumOrMaximum = maximum;
+            outputString = "Максимальная";
+        }
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
-                    if (maximum == variable.getSalary()) {
+                    if (minimumOrMaximum == variable.getSalary()) {
                         counter++;
-                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getSurnameNamePatrnimic(), variable.getSalary(), " руб.");
+                        System.out.println(variable);
                     }
                 }
             }
         }
-        System.out.printf("%s", "Максимальная зарплата сотрудника отдела " + numberDepartament + " составляет: ");
-        System.out.printf("%.2f%s%d%s\n", maximum, " руб. и её получает ", counter, " человек(а)");
+        System.out.printf("\n%s%s", outputString, " зарплата сотрудника предприятия составляет: ");
+        System.out.printf("%.2f%s%d%s\n", minimumOrMaximum, " руб. и её получает ", counter, " человек(а)");
     }
 
     static void displayListEmployees() {
         System.out.printf("%35s\n", "Фамилия имя отчество");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
-                System.out.printf("%35s\n", variable.getSurnameNamePatrnimic());
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+                System.out.printf("%35s\n", variable.getFulname());
             }
         }
     }
@@ -192,7 +166,7 @@ public class Main {
     static void indexesWages(int procent) {
         System.out.printf("%5s%35s%10s%20s%35s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата", "Зарплата после индексации");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 System.out.print(variable);
                 variable.setSalary((variable.getSalary() + (variable.getSalary() * procent / 100)));
                 System.out.printf("%20.2f%5s\n", variable.getSalary(), "руб");
@@ -203,7 +177,7 @@ public class Main {
     static void indexesWages(int procent, int numberDepartament) {
         System.out.printf("%5s%35s%10s%20s%35s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата", "Зарплата после индексации");
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
                     System.out.print(variable);
                     variable.setSalary((variable.getSalary() + (variable.getSalary() * procent / 100)));
@@ -217,7 +191,7 @@ public class Main {
         System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
         byte number = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (doorstep > variable.getSalary()) {
                     System.out.println(variable);
                     number++;
@@ -233,10 +207,10 @@ public class Main {
         System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         byte number = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
                     if (doorstep > variable.getSalary()) {
-                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getSurnameNamePatrnimic(), variable.getSalary(), " руб.");
+                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFulname(), variable.getSalary(), " руб.");
                         number++;
                     }
                 }
@@ -251,7 +225,7 @@ public class Main {
         System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
         byte number = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (doorstep <= variable.getSalary()) {
                     System.out.println(variable);
                     number++;
@@ -267,10 +241,10 @@ public class Main {
         System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         byte number = 0;
         for (Employee variable : employees) {
-            if (evaluateCell(variable)) {
+            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (variable.getDepartament() == numberDepartament) {
                     if (doorstep <= variable.getSalary()) {
-                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getSurnameNamePatrnimic(), variable.getSalary(), " руб.");
+                        System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFulname(), variable.getSalary(), " руб.");
                         number++;
                     }
                 }
@@ -282,42 +256,40 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("""
-                -------------------------КУРСОВОЕ ЗАДАНИЕ-------------------------------
-                ----------------------- КНИГА СОТРУДНИКОВ-------------------------------
-                ------------------------------------------------------------------------
-                """);
-        System.out.println("------------------------БАЗОВАЯ СЛОЖНОСТЬ-------------------------------\n");
-        System.out.println("--------------------a) список всех сотрудников--------------------------\n");
+        printTitle("КУРСОВОЕ ЗАДАНИЕ");
+        printTitle("КНИГА СОТРУДНИКОВ");
+        printTitle("БАЗОВАЯ СЛОЖНОСТЬ");
+        printTitle("a) список всех сотрудников");
         outputTheTable();
-        System.out.println("\n--------------------b) сумму затрат на ЗП в месяц------------------------");
+        printTitle("b) сумму затрат на ЗП в месяц");
         if (calculateAmountExpenses() == 0 && countTheEmployees() != 0) {
             System.out.println("Руководитель не платит работникам зарплату");
         } else if (countTheEmployees() == 0) {
             System.out.println("Штат пуст, трудоустраиваите людей на вакантные должности");
         } else {
             System.out.printf("%s%.2f%s\n", "Сумма затрат на зарплату сотрудникам составляет: ", calculateAmountExpenses(), " руб.");
-            System.out.println("\n--------------------c) сотрудники предприятия с минимальной ЗП-----------");
-            findMinimumWage();
-            System.out.println("\n--------------------d) сотрудники предприятия с максимальной ЗП----------");
-            findMaximumWage();
-            System.out.println("\n--------------------e) среднее значение зарплат на предприятии-----------");
+            printTitle("c) сотрудники предприятия с минимальной ЗП");
+            compareMoreLess("<");
+            //findMinimumWage();
+            printTitle("d) сотрудники предприятия с максимальной ЗП");
+            compareMoreLess(">");
+            //findMaximumWage();
+            printTitle("e) среднее значение зарплат на предприятии");
             System.out.printf("%s%.2f%s\n", "Среднее значение зарплат сотрудников предприятия составляет: ",
                     calculateAmountExpenses() / countTheEmployees(), " руб.");
-            System.out.println("\n--------------------f) список ФИО всех сотрудников предприятия-----------");
+            printTitle("f) список ФИО всех сотрудников предприятия");
             displayListEmployees();
 
-
-            System.out.println("\n------------------------------------------------ПОВЫШЕННАЯ СЛОЖНОСТЬ--------------------------------------------\n");
+            printTitle("ПОВЫШЕННАЯ СЛОЖНОСТЬ");
             int procent = 10;
-            int numberDepartament = 1;
+            int numberDepartament = 2;
             int procentDeportament = -10;
             float doorstep = 80000.23f;
             System.out.println("Ввели данные: \n1. procent = " + procent + " - значения для пункта 1.\n2. numberdepartament = " + numberDepartament +
                     " - значения для пункта 2.\n3. procentDeportament = " + procentDeportament + " -значения для пункта 2.е\n4. doorstep = " + doorstep + " - значение для пункта 3.");
             System.out.println("\n 1. Проиндексировать зарплату, (вызвать изменение зп у всех сотрудников на величину \"" + procent + " %\"):");
             indexesWages(procent);
-            System.out.println("\n ------------------------2. Получили в качестве параметра номер отдела " + numberDepartament + "------------------------------------");
+            printTitle("2. Получили в качестве параметра номер отдела " + numberDepartament);
             final int constantMinimumDepartment = 1;
             final int constantMaximumDepartament = 5;
             if (numberDepartament < constantMinimumDepartment || numberDepartament > constantMaximumDepartament) {
@@ -326,36 +298,29 @@ public class Main {
             } else if (countTheEmployees(numberDepartament) == 0) {
                 System.out.println("Отдел пуст, проведите работу по трудоустройству специалистов");
             } else {
-                System.out.println("\n ------------------------a.Сотрудники отдела " + numberDepartament + " с минимальной зп---------------------------------------------");
-                findMinimumWage(numberDepartament);
-
-                System.out.println("\n ------------------------b.Сотрудники отдела " + numberDepartament + " с максимальной зп--------------------------------------------");
-                findMaximumWage(numberDepartament);
-
-                System.out.println("\n ------------------------c.Сумма затрат на зп по отделу " + numberDepartament + "---------------------------------------------------");
+                printTitle("a.Сотрудники отдела " + numberDepartament + " с минимальной зп");
+                compareMoreLess(numberDepartament, "<");
+                printTitle("b.Сотрудники отдела " + numberDepartament + " с максимальной зп");
+                compareMoreLess(numberDepartament, ">");
+                printTitle("c.Сумма затрат на зп по отделу " + numberDepartament);
                 System.out.printf("%s%.2f%s\n", "Сумма затрат на зарплату сотрудникам составляет: ", calculateAmountExpenses(numberDepartament), " руб.");
-
-                System.out.println("\n------------------d. Среднее значение зарплат в отделе " + numberDepartament + "----------------------------------------------------");
+                printTitle("d. Среднее значение зарплат в отделе " + numberDepartament);
                 System.out.printf("%s%.2f%s\n", "Среднее значение зарплат сотрудников предприятия составляет: ",
                         calculateAmountExpenses(numberDepartament) / countTheEmployees(numberDepartament), " руб.");
-
-                System.out.println("\n------------------e. Проиндексировали зарплату всех сотрудников отдела " + numberDepartament + " на \"" + procentDeportament + " %\"-------------------------");
+                printTitle("e. Проиндексировали зарплату всех сотрудников отдела " + numberDepartament + " на \"" + procentDeportament + " %\"");
                 indexesWages(procentDeportament, numberDepartament);
-                System.out.println("\n------------------f. Напечатали всех сотрудников отдела № " + numberDepartament + " (все данные, кроме отдела)----------------------");
-                // System.out.println("\nзарплата всех сотрудников отдела " + numberDepartament + " после индексации представлена в таблице:");
+                printTitle("f. Напечатали всех сотрудников отдела № " + numberDepartament + " (все данные, кроме отдела)");
                 outputTheTable(numberDepartament);
-
-                System.out.println("\n ---------------3. Получили в качестве параметра порог зарплаты в отделе " + doorstep + "----------------------------");
-                System.out.println("\n ---------------a.1. Вывели на консоль всех сотрудников отдела " + numberDepartament + " с зп меньше " + doorstep + "-----------------------");
+                printTitle("3. Получили в качестве параметра порог зарплаты в отделе " + doorstep);
+                printTitle("a.1. Вывели на консоль всех сотрудников отдела \"" + numberDepartament + "\" с зп меньше \" + doorstep");
                 displayTheSalaryBelow(doorstep, numberDepartament);
-
-                System.out.println("\n -------------b.1. Вывели на консоль всех сотрудников отдела " + numberDepartament + " с зп больше (или равно) " + doorstep + "-------------");
+                printTitle("b.1. Вывели на консоль всех сотрудников отдела " + numberDepartament + " с зп больше (или равно) " + doorstep);
                 displayTheSalaryAbove(doorstep, numberDepartament);
             }
-            System.out.println("\n ------------3. Получили в качестве параметра порог зарплаты на предприятии " + doorstep + "------------------------");
-            System.out.println("\n ---------------a.2. Вывели на консоль всех сотрудников предприятия с зп меньше " + doorstep + "--------------------");
+            printTitle("3. Получили в качестве параметра порог зарплаты на предприятии " + doorstep);
+            printTitle("a.2. Вывели на консоль всех сотрудников предприятия с зп меньше " + doorstep);
             displayTheSalaryBelow(doorstep);
-            System.out.println("\n ---------------b.2. Вывели на консоль всех сотрудников предприятия с зп больше (или равно)  " + doorstep + "-------");
+            printTitle("b.2. Вывели на консоль всех сотрудников предприятия с зп больше (или равно)  " + doorstep);
             displayTheSalaryAbove(doorstep);
         }
     }
