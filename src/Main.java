@@ -84,10 +84,10 @@ public class Main {
         return amount;
     }
 
-    static void compareMoreLess(String moreLess) {
+    static  void compareMoreLess(String moreLess) {
         float minimum = employees[0].getSalary();
         float maximum = employees[0].getSalary();
-        System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
+        System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
         for (Employee variable : employees) {
             if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
                 if (minimum > variable.getSalary()) {
@@ -145,7 +145,7 @@ public class Main {
                 if (variable.getDepartament() == numberDepartament) {
                     if (minimumOrMaximum == variable.getSalary()) {
                         counter++;
-                        System.out.println(variable);
+                        System.out.printf("%5s%35s%20s\n", variable.getId(), variable.getFulname(), variable.getSalary());
                     }
                 }
             }
@@ -153,7 +153,6 @@ public class Main {
         System.out.printf("\n%s%s", outputString, " зарплата сотрудника предприятия составляет: ");
         System.out.printf("%.2f%s%d%s\n", minimumOrMaximum, " руб. и её получает ", counter, " человек(а)");
     }
-
     static void displayListEmployees() {
         System.out.printf("%35s\n", "Фамилия имя отчество");
         for (Employee variable : employees) {
