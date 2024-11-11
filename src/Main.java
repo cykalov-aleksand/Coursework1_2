@@ -296,7 +296,7 @@ public class Main {
                 printTitle("f. Напечатали всех сотрудников отдела № " + numberDepartament + " (все данные, кроме отдела)");
                 outputTheTable(numberDepartament);
                 printTitle("3. Получили в качестве параметра порог зарплаты в отделе " + doorstep);
-                printTitle("a.1. Вывели на консоль всех сотрудников отдела \"" + numberDepartament + "\" с зп меньше \" + doorstep");
+                printTitle("a.1. Вывели на консоль всех сотрудников отдела \"" + numberDepartament + " с зп меньше " + doorstep);
                 compareMoreAndLessThreshold(doorstep, numberDepartament, "<");
                 printTitle("b.1. Вывели на консоль всех сотрудников отдела " + numberDepartament + " с зп больше (или равно) " + doorstep);
                 compareMoreAndLessThreshold(doorstep, numberDepartament, ">");
