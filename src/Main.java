@@ -27,11 +27,11 @@ public class Main {
             System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         }
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0) {
                     System.out.println(variable);
                 } else if (variable.getDepartament() == numberDepartament) {
-                    System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFulname(), variable.getSalary(), " руб.");
+                    System.out.printf("%5d%35s%20.2f%s\n", variable.getId(), variable.getFullname(), variable.getSalary(), " руб.");
                 }
             }
         }
@@ -40,7 +40,7 @@ public class Main {
     static float calculateAmountExpenses(int numberDepartament) {
         float amount = 0;
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0 || variable.getDepartament() == numberDepartament) {
                     amount = amount + variable.getSalary();
                 }
@@ -52,7 +52,7 @@ public class Main {
     static int countTheEmployees(int numberDepartament) {
         int amount = 0;
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0 || variable.getDepartament() == numberDepartament) {
                     amount++;
                 }
@@ -66,7 +66,7 @@ public class Main {
         float maximum = employees[0].getSalary();
         System.out.printf("%5s%35s%20s\n", "id", "Фамилия имя отчество", "Зарплата");
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0 || variable.getDepartament() == numberDepartament) {
                     if (minimum > variable.getSalary()) {
                         minimum = variable.getSalary();
@@ -85,11 +85,11 @@ public class Main {
             outputString = "Максимальная";
         }
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0 || variable.getDepartament() == numberDepartament) {
                     if (minimumOrMaximum == variable.getSalary()) {
                         counter++;
-                        System.out.printf("%5s%35s%20s\n", variable.getId(), variable.getFulname(), variable.getSalary());
+                        System.out.printf("%5s%35s%20s\n", variable.getId(), variable.getFullname(), variable.getSalary());
                     }
                 }
             }
@@ -101,8 +101,8 @@ public class Main {
     static void displayListEmployees() {
         System.out.printf("%35s\n", "Фамилия имя отчество");
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
-                System.out.printf("%35s\n", variable.getFulname());
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
+                System.out.printf("%35s\n", variable.getFullname());
             }
         }
     }
@@ -110,7 +110,7 @@ public class Main {
     static void indexesWages(int procent, int numberDepartament) {
         System.out.printf("%5s%35s%10s%20s%35s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата", "Зарплата после индексации");
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0 || variable.getDepartament() == numberDepartament) {
                     System.out.print(variable);
                     variable.setSalary((variable.getSalary() + (variable.getSalary() * procent / 100)));
@@ -124,7 +124,7 @@ public class Main {
         System.out.printf("%5s%35s%10s%20s\n", "id", "Фамилия имя отчество", "Отдел", "Зарплата");
         byte number = 0;
         for (Employee variable : employees) {
-            if (variable.getFulname() != null && !variable.getFulname().isBlank()) {
+            if (variable.getFullname() != null && !variable.getFullname().isBlank()) {
                 if (numberDepartament == 0 || variable.getDepartament() == numberDepartament) {
                     if (moreLess.contains(">")) {
                         if (doorstep <= variable.getSalary()) {
